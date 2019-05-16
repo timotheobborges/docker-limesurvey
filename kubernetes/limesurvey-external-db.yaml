@@ -52,10 +52,8 @@ spec:
       - name: limesurvey
         image: crramirez/limesurvey:latest
         env: 
-        - name: TERM
-          value: xterm
         - name: DISABLE_MYSQL
-          value: yes
+          value: 'yes'
         ports:
         - containerPort: 80
           name: http
