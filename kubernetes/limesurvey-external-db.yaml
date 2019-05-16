@@ -3,7 +3,6 @@ kind: Service
 metadata:
   labels:
     app: limesurvey
-    tiers: frontend
   name: limesurvey
 spec:
   ports:
@@ -13,7 +12,6 @@ spec:
     protocol: TCP
   selector:
     app: limesurvey
-    tiers: frontend
   type: LoadBalancer
 ---
 apiVersion: v1
@@ -26,14 +24,10 @@ metadata:
      volume.beta.kubernetes.io/storage-class: "standard"
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
-  selector:
-    matchLabels:
-      app: limesurvey
-      tiers: frontend
 status: {}
 ---
 apiVersion: extensions/v1beta1
@@ -48,7 +42,6 @@ spec:
     metadata:
       labels:
         app: limesurvey
-        tiers: frontend
     spec:
       containers:
       - name: limesurvey
