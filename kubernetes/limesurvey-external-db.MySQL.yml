@@ -15,22 +15,6 @@ spec:
   type: NodePort
 ---
 apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  labels:
-    app: mysql
-  name: mysql-storage-pvc
-  annotations:
-     volume.beta.kubernetes.io/storage-class: "standard"
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
-status: {}
----
-apiVersion: v1
 kind: Secret
 metadata:
   name: mysql-secrets
