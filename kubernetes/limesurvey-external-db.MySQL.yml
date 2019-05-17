@@ -55,9 +55,6 @@ spec:
         image: mysql:5.7
         args:
           - "--ignore-db-dir=lost+found"
-        ports:
-        - name: mysql-port
-          containerPort: 3306
         env:
           - name: MYSQL_ROOT_PASSWORD
             value: rootpwd
@@ -65,6 +62,9 @@ spec:
             #  secretKeyRef:
             #    name: mysql-secrets
             #    key: root-password
+        ports:
+        - name: mysql-port
+          containerPort: 3306      
         volumeMounts:
         - mountPath: "/var/lib/mysql"
           name: mysql-storage
@@ -73,3 +73,36 @@ spec:
           persistentVolumeClaim:
             claimName: mysql-storage
 status: {}
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: mysql_depl_new
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - image: mysql:5.6
+        name: mysql
+        env:
+          # Use secret in real usage
+        - name: MYSQL_ROOT_PASSWORD
+          value: rootpwd
+        ports:
+        - containerPort: 3306
+          name: mysql-port
+        volumeMounts:
+        - name: mysql-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pv-claim
