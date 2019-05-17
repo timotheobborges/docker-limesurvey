@@ -1,3 +1,19 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: mysql
+  name: mysql-storage-pvc-new
+  annotations:
+     volume.beta.kubernetes.io/storage-class: "standard"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+status: {}
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -24,9 +40,9 @@ spec:
         - containerPort: 3306
           name: mysql-port
         volumeMounts:
-        - name: mysql-storage
+        - name: mysql-storage-vol-new
           mountPath: /var/lib/mysql
       volumes:
-      - name: mysql-storage
+      - name: mysql-storage-vol-new
         persistentVolumeClaim:
-          claimName: mysql-storage
+          claimName: mysql-storage-pvc-new
