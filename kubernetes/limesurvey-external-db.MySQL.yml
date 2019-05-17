@@ -36,7 +36,8 @@ metadata:
   name: mysql-secrets
 type: Opaque
 data:
-  root-password: mysql.root.pwd
+  root-password: bXlzcWxfcm9vdF9wd2QK
+  #senha em claro é: mysql_root_pwd
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
