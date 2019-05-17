@@ -39,7 +39,7 @@ data:
   root-password: bXlzcWxfcm9vdF9wd2QK
   #senha em claro é: mysql_root_pwd
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mysql-depl
