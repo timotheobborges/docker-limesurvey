@@ -14,22 +14,6 @@ spec:
     app: limesurvey
   type: LoadBalancer
 ---
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  labels:
-    app: limesurvey
-  name: limesurvey-upload
-  annotations:
-     volume.beta.kubernetes.io/storage-class: "standard"
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
-status: {}
----
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
