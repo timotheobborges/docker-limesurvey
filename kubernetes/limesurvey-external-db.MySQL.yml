@@ -51,7 +51,7 @@ spec:
         app: mysql
     spec:
       containers:
-      - name: mysql-pod
+      - name: mysql-container
         image: mysql:5.7
         args:
           - "--ignore-db-dir=lost+found"
@@ -60,10 +60,11 @@ spec:
           containerPort: 3306
         env:
           - name: MYSQL_ROOT_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mysql-secrets
-                key: root-password
+            value: rootpwd
+            #valueFrom:
+            #  secretKeyRef:
+            #    name: mysql-secrets
+            #    key: root-password
         volumeMounts:
         - mountPath: "/var/lib/mysql"
           name: mysql-storage
