@@ -36,8 +36,8 @@ metadata:
   name: mysql-secrets
 type: Opaque
 data:
-  root-password: bXlzcWxfcm9vdF9wd2QK
-  #senha em claro é: mysql_root_pwd
+  root-password: bXlzcWxyb290cHdk
+  #senha em claro é: mysqlrootpwd
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -56,11 +56,12 @@ spec:
         app: mysql
     spec:
       containers:
-      - image: mysql:5.6
+      - image: mysql:5.7
         name: mysql-containter
+        args:
+          - "--ignore-db-dir=lost+found"
         env:
           - name: MYSQL_ROOT_PASSWORD
-            #value: mysql_root_pwd
             valueFrom:
               secretKeyRef:
                 name: mysql-secrets
