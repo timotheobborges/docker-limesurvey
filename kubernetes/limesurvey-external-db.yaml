@@ -48,7 +48,6 @@ spec:
     metadata:
       labels:
         app: limesurvey
-        tiers: frontend
     spec:
       containers:
       - name: limesurvey
