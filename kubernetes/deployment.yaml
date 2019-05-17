@@ -17,8 +17,9 @@ status: {}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mysql-depl-new
+  name: mysql-depl
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: mysql
@@ -31,7 +32,7 @@ spec:
     spec:
       containers:
       - image: mysql:5.6
-        name: mysql
+        name: mysql-containter
         env:
           # Use secret in real usage
         - name: MYSQL_ROOT_PASSWORD

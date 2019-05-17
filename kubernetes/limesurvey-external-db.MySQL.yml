@@ -19,7 +19,7 @@ kind: PersistentVolumeClaim
 metadata:
   labels:
     app: mysql
-  name: mysql-storage
+  name: mysql-storage-pvc
   annotations:
      volume.beta.kubernetes.io/storage-class: "standard"
 spec:
@@ -39,46 +39,12 @@ data:
   root-password: bXlzcWxfcm9vdF9wd2QK
   #senha em claro é: mysql_root_pwd
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mysql-depl
 spec:
   replicas: 1
-  template:
-    metadata:
-      labels:
-        app: mysql
-    spec:
-      containers:
-      - name: mysql-container
-        image: mysql:5.7
-        args:
-          - "--ignore-db-dir=lost+found"
-        env:
-          - name: MYSQL_ROOT_PASSWORD
-            value: rootpwd
-            #valueFrom:
-            #  secretKeyRef:
-            #    name: mysql-secrets
-            #    key: root-password
-        ports:
-        - name: mysql-port
-          containerPort: 3306      
-        volumeMounts:
-        - mountPath: "/var/lib/mysql"
-          name: mysql-storage
-      volumes:
-        - name: mysql-storage
-          persistentVolumeClaim:
-            claimName: mysql-storage
-status: {}
----
-apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
-kind: Deployment
-metadata:
-  name: mysql_depl_new
-spec:
   selector:
     matchLabels:
       app: mysql
@@ -91,18 +57,22 @@ spec:
     spec:
       containers:
       - image: mysql:5.6
-        name: mysql
+        name: mysql-containter
         env:
-          # Use secret in real usage
-        - name: MYSQL_ROOT_PASSWORD
-          value: rootpwd
+          - name: MYSQL_ROOT_PASSWORD
+            #value: mysql_root_pwd
+            valueFrom:
+              secretKeyRef:
+                name: mysql-secrets
+                key: root-password
         ports:
         - containerPort: 3306
-          name: mysql-port
+          name: mysql-port    
         volumeMounts:
-        - name: mysql-storage
-          mountPath: /var/lib/mysql
+        - mountPath: "/var/lib/mysql"
+          name: mysql-storage-vol
       volumes:
-      - name: mysql-persistent-storage
-        persistentVolumeClaim:
-          claimName: mysql-pv-claim
+        - name: mysql-storage-vol
+          persistentVolumeClaim:
+            claimName: mysql-storage-pvc
+status: {}
